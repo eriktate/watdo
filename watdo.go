@@ -30,10 +30,10 @@ type Project struct {
 
 // An Account is the owner of some number of projects.
 type Account struct {
-	ID        uid.UID
-	Name      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uid.UID   `json:"id" db:"id"`
+	Name      string    `json:"name" db:"name"`
+	CreatedAt time.Time `json:"createdAt" db:"created_at"`
+	UpdatedAt time.Time `json:"updatedAt" db:"updated_at"`
 }
 
 // A User is a member of some number of Accounts. User's perform actions in the system.

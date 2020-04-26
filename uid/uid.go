@@ -1,6 +1,7 @@
 package uid
 
 import (
+	"database/sql/driver"
 	"encoding/json"
 
 	"github.com/google/uuid"
@@ -11,12 +12,17 @@ type UID struct {
 	uid *uuid.UUID
 }
 
-// NewID returns a new ID.
-func NewUID() UID {
+// New returns a new ID.
+func New() UID {
 	uid := uuid.New()
 	return UID{
 		uid: &uid,
 	}
+}
+
+// Nil returns a blank UID.
+func Nil() UID {
+	return UID{}
 }
 
 // ParseString creates a UID from some stringified ID.
@@ -74,4 +80,18 @@ func (u UID) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(nil)
+}
+
+func (u *UID) Scan(src interface{}) error {
+	var uid uuid.UUID
+	if err := uid.Scan(src); err != nil {
+		return err
+	}
+
+	u.uid = &uid
+	return nil
+}
+
+func (u UID) Value() (driver.Value, error) {
+	return u.String(), nil
 }

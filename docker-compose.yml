@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+  server:
+    build:
+      context: "./"
+      dockerfile: "cmd/server/Dockerfile"
+      args:
+        WATDO_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "postgres"
+      - "migrate"
+  migrate:
+    build:
+      context: "./"
+      dockerfile: "cmd/migrate/Dockerfile"
+    environment:
+      WATDO_DB_HOST: "postgres"
+    depends_on:
+      - "postgres"
+  postgres:
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "watdo"
+      POSTGRES_DB: "watdo"

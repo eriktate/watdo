@@ -97,6 +97,17 @@ type UserStore interface {
 	ListUsers(ctx context.Context, req ListUsersReq) ([]User, error)
 }
 
+type AccountService interface {
+	SaveAccount(ctx context.Context, account Account) (uid.UID, error)
+	ListAccounts(ctx context.Context) ([]Account, error)
+	FetchAccount(ctx context.Context, id uid.UID) (Account, error)
+}
+
+// A WatdoStore aggregates the functionality of all of the previous stores.
+type WatdoService interface {
+	AccountService
+}
+
 // The Manager interface captures extraneous actions for now.
 type Manager interface {
 	AssignAccountUser(ctx context.Context, accountID, userID uid.UID) error

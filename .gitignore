@@ -8,3 +8,4 @@ bundleOutput/
 ui/lib
 ui/indexProduction.html
 ui/**/*.bs.js
+/.postgres

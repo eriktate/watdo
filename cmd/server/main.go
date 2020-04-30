@@ -1,22 +1,26 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-
-	"github.com/eriktate/watdo/env"
+	"github.com/eriktate/watdo/http"
+	"github.com/eriktate/watdo/postgres"
+	"github.com/eriktate/watdo/service"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	host := env.GetString("WATDO_HOST", "localhost")
-	port := env.GetUint("WATDO_PORT", 8080)
-
-	if err := http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), http.HandlerFunc(helloHandler)); err != nil {
-		log.Fatal(err)
+	logger := logrus.New()
+	store, err := postgres.New(postgres.NewStoreOpts())
+	if err != nil {
+		logger.WithError(err).Fatal("could not connect to postgres")
 	}
-}
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello, world!"))
+	service := service.NewAccountService(store)
+	server := http.NewServer(
+		http.WithLogger(logger),
+		http.WithService(service),
+	)
+
+	if err := server.Listen(); err != nil {
+		logger.WithError(err).Fatal("server crashed")
+	}
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/eriktate/watdo"
 	"github.com/eriktate/watdo/uid"
-	"github.com/jmoiron/sqlx"
 )
 
 func (s *Store) CreateAccount(ctx context.Context, account watdo.Account) (uid.UID, error) {
@@ -43,18 +42,4 @@ func (s *Store) ListAccounts(ctx context.Context, req watdo.ListAccountsReq) ([]
 	}
 
 	return accounts, nil
-}
-
-func runNamedTx(ctx context.Context, db *sqlx.DB, query string, arg interface{}) error {
-	tx, err := db.BeginTxx(ctx, nil)
-	if err != nil {
-		return err
-	}
-
-	if _, err := tx.NamedExecContext(ctx, query, arg); err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	return tx.Commit()
 }

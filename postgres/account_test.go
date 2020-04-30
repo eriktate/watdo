@@ -2,7 +2,6 @@ package postgres_test
 
 import (
 	"context"
-	"os"
 	"testing"
 
 	"github.com/eriktate/watdo"
@@ -10,7 +9,6 @@ import (
 )
 
 func Test_Accounts(t *testing.T) {
-	os.Chdir("../")
 	// SETUP
 	ctx := context.TODO()
 	store, err := postgres.New(postgres.NewStoreOpts())

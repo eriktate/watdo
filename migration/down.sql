@@ -1,1 +1,7 @@
-DROP TABLE accounts;
+DROP TABLE IF EXISTS account_users;
+DROP TABLE IF EXISTS assigned_users;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS task_statuses;
+DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS accounts;

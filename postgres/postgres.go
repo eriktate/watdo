@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/eriktate/watdo/env"
@@ -75,4 +76,18 @@ func New(opts StoreOpts) (*Store, error) {
 	}
 
 	return &Store{db}, nil
+}
+
+func runNamedTx(ctx context.Context, db *sqlx.DB, query string, arg interface{}) error {
+	tx, err := db.BeginTxx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	if _, err := tx.NamedExecContext(ctx, query, arg); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }

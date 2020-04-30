@@ -14,18 +14,18 @@ type Task struct {
 	Description string
 	ProjectID   uid.UID
 	ReporterID  uid.UID
-	AssignedID  uid.UID
+	StatusID    uid.UID
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
 
 type Project struct {
-	ID          uid.UID
-	Name        string
-	Description string
-	AccountID   uid.UID
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID          uid.UID   `json:"id" db:"id"`
+	Name        string    `json:"name" db:"name"`
+	Description string    `json:"description" db:"description"`
+	AccountID   uid.UID   `json:"accountId" db:"account_id"`
+	CreatedAt   time.Time `json:"createdAt" db:"created_at"`
+	UpdatedAt   time.Time `json:"updatedAt" db:"updated_at"`
 }
 
 // An Account is the owner of some number of projects.
@@ -38,12 +38,12 @@ type Account struct {
 
 // A User is a member of some number of Accounts. User's perform actions in the system.
 type User struct {
-	ID        uid.UID
-	Name      string
-	Email     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time
+	ID        uid.UID    `json:"id" db:"id"`
+	Name      string     `json:"name" db:"name"`
+	Email     string     `json:"email" db:"email"`
+	CreatedAt time.Time  `json:"createdAt" db:"created_at"`
+	UpdatedAt time.Time  `json:"updatedAt" db:"updated_at"`
+	DeletedAt *time.Time `json:"deletedAt,omitempty" db:"deleted_at"`
 }
 
 // A ListTasksReq captures a request for some listing of Tasks.
@@ -62,6 +62,7 @@ type ListAccountsReq struct {
 
 // A ListUsersReq captures a request for some listing of Users.
 type ListUsersReq struct {
+	Accounts []uid.UID `json:"accounts,omitempty" db:"accounts"`
 }
 
 // A TaskStore knows how to do basic CRUD operations on a Task.
@@ -94,4 +95,10 @@ type UserStore interface {
 	UpdateUser(ctx context.Context, user User) error
 	FetchUser(ctx context.Context, id uid.UID) (User, error)
 	ListUsers(ctx context.Context, req ListUsersReq) ([]User, error)
+}
+
+// The Manager interface captures extraneous actions for now.
+type Manager interface {
+	AssignAccountUser(ctx context.Context, accountID, userID uid.UID) error
+	SetTaskStatus(ctx context.Context, accountID, userID uid.UID) error
 }

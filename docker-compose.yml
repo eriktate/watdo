@@ -11,6 +11,8 @@ services:
       WRKHUB_HOST: "0.0.0.0"
     ports:
       - "8080:8080"
+    volumes:
+      - "./queries:/opt/wrkhub/queries"
     depends_on:
       - "postgres"
       - "migrate"

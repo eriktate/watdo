@@ -37,7 +37,7 @@ func (s *Store) ListAccounts(ctx context.Context, req wrkhub.ListAccountsReq) ([
 	query := getQuery("listAccounts")
 
 	var accounts []wrkhub.Account
-	if err := s.db.SelectContext(ctx, &accounts, query, req); err != nil {
+	if err := s.db.SelectContext(ctx, &accounts, query); err != nil {
 		return nil, err
 	}
 

@@ -55,9 +55,9 @@ CREATE TABLE IF NOT EXISTS assigned_users(
 );
 
 -- load some data
-INSERT INTO accounts (id, name) VALUES ('5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'Test Account');
-INSERT INTO users (id, name, email) VALUES ('d163193e-6f6a-4a71-92a1-c76d3148559a', 'Test User', 'test@watdo.app');
-INSERT INTO projects (id, account_id, name, description) VALUES('93305d12-6186-4002-a180-1d93ea9f74cb', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'Test Project', 'A test project');
-INSERT INTO task_statuses (id, account_id, name) VALUES ('95836ddf-a578-4282-8db1-10a04abfd220', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'ToDo');
-INSERT INTO task_statuses (id, account_id, name) VALUES ('88a75370-e482-4c14-9181-80ffe238dd60', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'In Progress');
-INSERT INTO task_statuses (id, account_id, name) VALUES ('22451d49-c372-4df6-b629-8cd248bf584b', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'Done');
+INSERT INTO accounts (id, name) VALUES ('5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'Test Account') ON CONFLICT DO NOTHING;
+INSERT INTO users (id, name, email) VALUES ('d163193e-6f6a-4a71-92a1-c76d3148559a', 'Test User', 'test@watdo.app') ON CONFLICT DO NOTHING;
+INSERT INTO projects (id, account_id, name, description) VALUES('93305d12-6186-4002-a180-1d93ea9f74cb', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'Test Project', 'A test project') ON CONFLICT DO NOTHING;
+INSERT INTO task_statuses (id, account_id, name) VALUES ('95836ddf-a578-4282-8db1-10a04abfd220', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'ToDo') ON CONFLICT DO NOTHING;
+INSERT INTO task_statuses (id, account_id, name) VALUES ('88a75370-e482-4c14-9181-80ffe238dd60', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'In Progress') ON CONFLICT DO NOTHING;
+INSERT INTO task_statuses (id, account_id, name) VALUES ('22451d49-c372-4df6-b629-8cd248bf584b', '5f2d9a95-b335-493f-a7ed-8dbd81027bac', 'Done') ON CONFLICT DO NOTHING;

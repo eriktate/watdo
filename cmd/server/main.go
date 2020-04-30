@@ -9,7 +9,7 @@ import (
 
 func main() {
 	logger := logrus.New()
-	store, err := postgres.New(postgres.NewStoreOpts())
+	store, err := postgres.New()
 	if err != nil {
 		logger.WithError(err).Fatal("could not connect to postgres")
 	}

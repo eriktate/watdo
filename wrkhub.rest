@@ -1,0 +1,15 @@
+// create a new account
+http://localhost:8080
+POST /account
+{
+	"name": "Test Account",
+	"description": "This was created using the HTTP API"
+}
+
+// get an account
+http://localhost:8080
+GET /account/dc686c53-97ce-491a-acf9-d5ae6415ad1a
+
+// list accounts
+http://localhost:8080
+GET /account

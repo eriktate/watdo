@@ -63,6 +63,7 @@ func WithService(service wrkhub.WrkhubService) ConfigOpt {
 }
 
 func (s Server) Listen() error {
+	s.log.WithField("host", s.host).WithField("port", s.port).Info("starting server...")
 	return http.ListenAndServe(fmt.Sprintf("%s:%d", s.host, s.port), s.buildRouter())
 }
 
@@ -76,6 +77,7 @@ func (s Server) buildRouter() *chi.Mux {
 }
 
 func ok(w http.ResponseWriter, data []byte) {
+	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }

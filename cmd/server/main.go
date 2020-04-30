@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/eriktate/watdo/http"
-	"github.com/eriktate/watdo/postgres"
-	"github.com/eriktate/watdo/service"
+	"github.com/eriktate/wrkhub/http"
+	"github.com/eriktate/wrkhub/postgres"
+	"github.com/eriktate/wrkhub/service"
 	"github.com/sirupsen/logrus"
 )
 

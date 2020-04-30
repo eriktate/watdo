@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/eriktate/watdo/env"
-	"github.com/eriktate/watdo/migration"
-	"github.com/eriktate/watdo/postgres"
+	"github.com/eriktate/wrkhub/env"
+	"github.com/eriktate/wrkhub/migration"
+	"github.com/eriktate/wrkhub/postgres"
 )
 
 func main() {

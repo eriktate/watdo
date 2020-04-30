@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/eriktate/watdo/env"
+	"github.com/eriktate/wrkhub/env"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -25,12 +25,12 @@ type StoreOpts struct {
 
 func NewStoreOpts() StoreOpts {
 	return StoreOpts{
-		host:     env.GetString("WATDO_DB_HOST", "localhost"),
-		dbname:   env.GetString("WATDO_DB_NAME", "watdo"),
-		user:     env.GetString("WATDO_DB_USER", "watdo"),
-		password: env.GetString("WATDO_DB_PASSWORD", "password"),
-		port:     env.GetUint("WATDO_DB_PORT", 5432),
-		sslMode:  env.GetString("WATDO_DB_SSL_MODE", "disable"),
+		host:     env.GetString("WRKHUB_DB_HOST", "localhost"),
+		dbname:   env.GetString("WRKHUB_DB_NAME", "wrkhub"),
+		user:     env.GetString("WRKHUB_DB_USER", "wrkhub"),
+		password: env.GetString("WRKHUB_DB_PASSWORD", "password"),
+		port:     env.GetUint("WRKHUB_DB_PORT", 5432),
+		sslMode:  env.GetString("WRKHUB_DB_SSL_MODE", "disable"),
 	}
 }
 

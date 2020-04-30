@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/eriktate/watdo"
-	"github.com/eriktate/watdo/postgres"
+	"github.com/eriktate/wrkhub"
+	"github.com/eriktate/wrkhub/postgres"
 )
 
 func init() {
@@ -21,18 +21,18 @@ func Test_Users(t *testing.T) {
 		t.Fatalf("failed to connect to postgres: %s", err)
 	}
 
-	user1 := watdo.User{
+	user1 := wrkhub.User{
 		Name:  "Test User",
 		Email: "test@test.com",
 	}
 
-	user2 := watdo.User{
+	user2 := wrkhub.User{
 		Name:  "Test User 2",
 		Email: "test2@test.com",
 	}
 
 	// RUN & ASSERT
-	existing, err := store.ListUsers(ctx, watdo.ListUsersReq{})
+	existing, err := store.ListUsers(ctx, wrkhub.ListUsersReq{})
 	if err != nil {
 		t.Fatal("failed to get existing list of users")
 	}
@@ -51,7 +51,7 @@ func Test_Users(t *testing.T) {
 		t.Fatalf("failed to fetch test user: %s", err)
 	}
 
-	listUsers, err := store.ListUsers(ctx, watdo.ListUsersReq{})
+	listUsers, err := store.ListUsers(ctx, wrkhub.ListUsersReq{})
 	if err != nil {
 		t.Fatalf("failed to list users: %s", err)
 	}

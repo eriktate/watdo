@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/eriktate/watdo/uid"
+	"github.com/eriktate/wrkhub/uid"
 )
 
 func Test_ParseString(t *testing.T) {

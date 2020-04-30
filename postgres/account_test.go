@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/eriktate/watdo"
-	"github.com/eriktate/watdo/postgres"
+	"github.com/eriktate/wrkhub"
+	"github.com/eriktate/wrkhub/postgres"
 )
 
 func Test_Accounts(t *testing.T) {
@@ -16,7 +16,7 @@ func Test_Accounts(t *testing.T) {
 		t.Fatalf("failed to connect to postgres: %s", err)
 	}
 
-	account := watdo.Account{
+	account := wrkhub.Account{
 		Name: "Test account1",
 	}
 

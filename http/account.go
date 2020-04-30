@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/eriktate/uid"
-	"github.com/eriktate/watdo"
+	"github.com/eriktate/wrkhub"
+	"github.com/eriktate/wrkhub/uid"
 	"github.com/go-chi/chi"
 )
 
@@ -20,7 +20,7 @@ func (s Server) PostAccount() http.HandlerFunc {
 		}
 		defer r.Body.Close()
 
-		var account watdo.Account
+		var account wrkhub.Account
 		if err := json.Unmarshal(data, &account); err != nil {
 			s.log.WithError(err).Error("could not marshal account")
 			badRequest(w, "could not unmarshal account")

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/eriktate/watdo"
-	"github.com/eriktate/watdo/env"
+	"github.com/eriktate/wrkhub"
+	"github.com/eriktate/wrkhub/env"
 	"github.com/go-chi/chi"
 	"github.com/sirupsen/logrus"
 )
@@ -17,13 +17,13 @@ type Server struct {
 	port uint
 	log  *logrus.Logger
 
-	service watdo.WatdoService
+	service wrkhub.WrkhubService
 }
 
 func NewServer(opts ...ConfigOpt) Server {
 	server := Server{
-		host: env.GetString("WATDO_HOST", "localhost"),
-		port: env.GetUint("WATDO_PORT", 8080),
+		host: env.GetString("WRKHUB_HOST", "localhost"),
+		port: env.GetUint("WRKHUB_PORT", 8080),
 		log:  logrus.New(),
 	}
 
@@ -55,7 +55,7 @@ func WithLogger(log *logrus.Logger) ConfigOpt {
 	}
 }
 
-func WithService(service watdo.WatdoService) ConfigOpt {
+func WithService(service wrkhub.WrkhubService) ConfigOpt {
 	return func(s Server) Server {
 		s.service = service
 		return s

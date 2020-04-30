@@ -3,19 +3,19 @@ package service
 import (
 	"context"
 
-	"github.com/eriktate/watdo"
-	"github.com/eriktate/watdo/uid"
+	"github.com/eriktate/wrkhub"
+	"github.com/eriktate/wrkhub/uid"
 )
 
 type AccountService struct {
-	store watdo.AccountStore
+	store wrkhub.AccountStore
 }
 
-func NewAccountService(store watdo.AccountStore) AccountService {
+func NewAccountService(store wrkhub.AccountStore) AccountService {
 	return AccountService{store}
 }
 
-func (s AccountService) SaveAccount(ctx context.Context, account watdo.Account) (uid.UID, error) {
+func (s AccountService) SaveAccount(ctx context.Context, account wrkhub.Account) (uid.UID, error) {
 	if account.ID.Empty() {
 		return s.store.CreateAccount(ctx, account)
 	}
@@ -23,10 +23,10 @@ func (s AccountService) SaveAccount(ctx context.Context, account watdo.Account) 
 	return account.ID, s.store.UpdateAccount(ctx, account)
 }
 
-func (s AccountService) FetchAccount(ctx context.Context, id uid.UID) (watdo.Account, error) {
+func (s AccountService) FetchAccount(ctx context.Context, id uid.UID) (wrkhub.Account, error) {
 	return s.store.FetchAccount(ctx, id)
 }
 
-func (s AccountService) ListAccounts(ctx context.Context) ([]watdo.Account, error) {
-	return s.store.ListAccounts(ctx, watdo.ListAccountsReq{})
+func (s AccountService) ListAccounts(ctx context.Context) ([]wrkhub.Account, error) {
+	return s.store.ListAccounts(ctx, wrkhub.ListAccountsReq{})
 }

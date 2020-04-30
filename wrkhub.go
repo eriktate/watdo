@@ -1,10 +1,10 @@
-package watdo
+package wrkhub
 
 import (
 	"context"
 	"time"
 
-	"github.com/eriktate/watdo/uid"
+	"github.com/eriktate/wrkhub/uid"
 )
 
 // A Task is some unit of work to be done.
@@ -103,8 +103,8 @@ type AccountService interface {
 	FetchAccount(ctx context.Context, id uid.UID) (Account, error)
 }
 
-// A WatdoStore aggregates the functionality of all of the previous stores.
-type WatdoService interface {
+// A WrkhubService aggregates the functionality of all of the previous stores.
+type WrkhubService interface {
 	AccountService
 }
 

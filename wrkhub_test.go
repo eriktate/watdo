@@ -1,16 +1,16 @@
-package watdo_test
+package wrkhub_test
 
 import (
 	"encoding/json"
 	"fmt"
 	"testing"
 
-	"github.com/eriktate/watdo"
+	"github.com/eriktate/wrkhub"
 )
 
 func Test_TaskJSON(t *testing.T) {
-	task := watdo.Task{
-		ID:          watdo.NewUniqueID(),
+	task := wrkhub.Task{
+		ID:          wrkhub.NewUniqueID(),
 		Title:       "Test Task",
 		Description: "Test Description",
 	}
@@ -20,7 +20,7 @@ func Test_TaskJSON(t *testing.T) {
 		t.Fatalf("failed to marshal task: %s", err)
 	}
 
-	var decodedTask watdo.Task
+	var decodedTask wrkhub.Task
 	if err := json.Unmarshal(data, &decodedTask); err != nil {
 		t.Fatalf("failed to unmarshal task: %s", err)
 	}
@@ -31,7 +31,7 @@ func Test_TaskJSON(t *testing.T) {
 }
 
 func Test_TaskJSON(t *testing.T) {
-	task := watdo.Task{
+	task := wrkhub.Task{
 		ID:          ,
 		Title:       "Test Task",
 		Description: "Test Description",
@@ -43,7 +43,7 @@ func Test_TaskJSON(t *testing.T) {
 	}
 
 	fmt.Println(string(data))
-	var decodedTask watdo.Task
+	var decodedTask wrkhub.Task
 	if err := json.Unmarshal(data, &decodedTask); err != nil {
 		t.Fatalf("failed to unmarshal task: %s", err)
 	}

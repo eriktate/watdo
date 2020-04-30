@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/eriktate/watdo/postgres"
+	"github.com/eriktate/wrkhub/postgres"
 	_ "github.com/lib/pq"
 )
 

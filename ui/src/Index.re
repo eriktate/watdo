@@ -1,3 +1,3 @@
 // Entry point
 
-ReactDOMRe.renderToElementWithId(<App name="Erik" />, "app");
+ReactDOMRe.renderToElementWithId(<App />, "app");

@@ -7,6 +7,7 @@ import (
 	"github.com/eriktate/wrkhub"
 	"github.com/eriktate/wrkhub/env"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 	"github.com/sirupsen/logrus"
 )
 
@@ -69,6 +70,10 @@ func (s Server) Listen() error {
 
 func (s Server) buildRouter() *chi.Mux {
 	r := chi.NewRouter()
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	}))
 	r.Post("/account", s.PostAccount())
 	r.Get("/account", s.ListAccounts())
 	r.Get("/account/{accountID}", s.GetAccount())

@@ -34,7 +34,7 @@ func (s Server) PostAccount() http.HandlerFunc {
 			return
 		}
 
-		ok(w, []byte(id.String()))
+		ok(w, []byte(id.JSONString()))
 	}
 }
 

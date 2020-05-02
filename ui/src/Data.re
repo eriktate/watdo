@@ -9,6 +9,16 @@ type account = {
 
 type accounts = array(account);
 
+let emptyAccount = {id: "", name: "", createdAt: "", updatedAt: ""};
+
+let withId = (id, fieldList) => {
+  if (id != "") {
+    [("id", Json.Encode.string(id))] @ fieldList
+  } else {
+    fieldList
+  }
+}
+
 module Decode = {
   let account = (json): account =>
     Json.Decode.{
@@ -20,6 +30,16 @@ module Decode = {
 
   let accounts = (json): array(account) =>
     Json.Decode.(json |> array(account));
+
+  let id = (json): string => Json.Decode.string(json);
+};
+
+module Encode = {
+  let account = account => {
+    let fieldList = [("name", Json.Encode.string(account.name))];
+
+    Json.Encode.(object_(withId(account.id, fieldList)));
+  };
 };
 
 let listAccounts = callback =>
@@ -32,6 +52,30 @@ let listAccounts = callback =>
          |> (
            accounts => {
              callback(accounts);
+             resolve();
+           }
+         )
+       )
+    |> ignore
+  );
+
+let saveAccount = (account, callback) =>
+  Js.Promise.(
+    Fetch.fetchWithInit(
+      baseUrl ++ "/account",
+      Fetch.RequestInit.make(
+        ~method_=Fetch.Post,
+        ~body=Fetch.BodyInit.make(Json.stringify(Encode.account(account))),
+        (),
+      ),
+    )
+    |> then_(Fetch.Response.json)
+    |> then_(json =>
+         json
+         |> Decode.id
+         |> (
+           id => {
+             callback(id);
              resolve();
            }
          )

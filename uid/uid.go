@@ -50,6 +50,15 @@ func (u UID) String() string {
 	return ""
 }
 
+func (u UID) JSONString() string {
+	str := u.String()
+	if str != "" {
+		return "\"" + str + "\""
+	}
+
+	return ""
+}
+
 // Empty returns whether or not the UID has a value yet.
 func (u UID) Empty() bool {
 	return u.uid == nil

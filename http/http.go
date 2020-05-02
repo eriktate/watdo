@@ -74,9 +74,14 @@ func (s Server) buildRouter() *chi.Mux {
 		AllowedOrigins: []string{"*"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 	}))
+
 	r.Post("/account", s.PostAccount())
 	r.Get("/account", s.ListAccounts())
 	r.Get("/account/{accountID}", s.GetAccount())
+
+	r.Post("/project", s.PostProject())
+	r.Get("/project", s.ListProjects())
+	r.Get("/project/{projectID}", s.GetProject())
 
 	return r
 }
@@ -100,4 +105,20 @@ func badRequest(w http.ResponseWriter, msg string) {
 func serverError(w http.ResponseWriter, msg string) {
 	w.WriteHeader(http.StatusInternalServerError)
 	w.Write([]byte(msg))
+}
+
+func respondWithError(w http.ResponseWriter, err error) {
+	werr, ok := err.(wrkhub.WrkhubErr)
+	if !ok {
+		serverError(w, "something went wrong")
+		return
+	}
+
+	safe := werr.SafeMsg()
+	switch werr.ErrType() {
+	case wrkhub.ErrInvalid:
+		badRequest(w, safe)
+	default:
+		serverError(w, safe)
+	}
 }

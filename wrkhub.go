@@ -103,13 +103,29 @@ type AccountService interface {
 	FetchAccount(ctx context.Context, id uid.UID) (Account, error)
 }
 
+type ProjectService interface {
+	SaveProject(ctx context.Context, project Project) (uid.UID, error)
+	ListProjects(ctx context.Context) ([]Project, error)
+	FetchProject(ctx context.Context, id uid.UID) (Project, error)
+}
+
 // A WrkhubService aggregates the functionality of all of the previous stores.
 type WrkhubService interface {
 	AccountService
+	ProjectService
 }
 
 // The Manager interface captures extraneous actions for now.
 type Manager interface {
 	AssignAccountUser(ctx context.Context, accountID, userID uid.UID) error
 	SetTaskStatus(ctx context.Context, accountID, userID uid.UID) error
+}
+
+// Validate whether or not a Project is configured properly.
+func (p Project) Validate() error {
+	if p.AccountID.Empty() {
+		return NewErr(ErrInvalid, "a project must have an account id")
+	}
+
+	return nil
 }

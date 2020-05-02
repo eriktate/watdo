@@ -6,10 +6,28 @@ POST /account
 	"description": "This was created using the HTTP API"
 }
 
+// list accounts
+http://localhost:8080
+GET /account
+
 // get an account
 http://localhost:8080
 GET /account/dc686c53-97ce-491a-acf9-d5ae6415ad1a
 
-// list accounts
+
+// create a new project
 http://localhost:8080
-GET /account
+POST /project
+{
+	"name": "Test Project",
+	"description": "Just a test project",
+	"accountId": "5f2d9a95-b335-493f-a7ed-8dbd81027bac"
+}
+
+// list projects
+http://localhost:8080
+GET /project
+
+// get a project
+http://localhost:8080
+GET /project/93305d12-6186-4002-a180-1d93ea9f74cb

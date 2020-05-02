@@ -102,5 +102,9 @@ func (u *UID) Scan(src interface{}) error {
 }
 
 func (u UID) Value() (driver.Value, error) {
+	if u.Empty() {
+		return nil, nil
+	}
+
 	return u.String(), nil
 }

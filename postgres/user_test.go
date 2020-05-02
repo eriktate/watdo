@@ -16,7 +16,7 @@ func init() {
 func Test_Users(t *testing.T) {
 	// SETUP
 	ctx := context.TODO()
-	store, err := postgres.New(postgres.NewStoreOpts())
+	store, err := postgres.New()
 	if err != nil {
 		t.Fatalf("failed to connect to postgres: %s", err)
 	}

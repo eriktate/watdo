@@ -40,16 +40,25 @@ func (s Server) PostProject() http.HandlerFunc {
 
 func (s Server) ListProjects() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		projects, err := s.service.ListProjects(r.Context())
+		accountID, err := uid.ParseString(r.URL.Query().Get("accountId"))
 		if err != nil {
-			s.log.WithError(err).Error("could not list projects")
+			s.log.WithError(err).WithField("accountID", accountID).Error("could not parse accountID")
+			badRequest(w, "could not parse accountID")
+			return
+		}
+
+		req := wrkhub.ListProjectsReq{AccountID: accountID}
+		log := s.log.WithField("req", req)
+		projects, err := s.service.ListProjects(r.Context(), req)
+		if err != nil {
+			log.WithError(err).Error("could not list projects")
 			serverError(w, "could not list projects")
 			return
 		}
 
 		data, err := json.Marshal(projects)
 		if err != nil {
-			s.log.WithError(err).Error("could not marshal project listing")
+			log.WithError(err).Error("could not marshal project listing")
 			serverError(w, "could not list projects")
 			return
 		}

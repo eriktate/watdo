@@ -53,7 +53,7 @@ type ListTasksReq struct {
 
 // A ListProjectsReq captures a request for some listing of Projects.
 type ListProjectsReq struct {
-	AccountID uid.UID
+	AccountID uid.UID `json:"accountId,omitempty" db:"account_id"`
 }
 
 // A ListAccountsReq captures a request for some listing of Accounts.
@@ -105,7 +105,7 @@ type AccountService interface {
 
 type ProjectService interface {
 	SaveProject(ctx context.Context, project Project) (uid.UID, error)
-	ListProjects(ctx context.Context) ([]Project, error)
+	ListProjects(ctx context.Context, req ListProjectsReq) ([]Project, error)
 	FetchProject(ctx context.Context, id uid.UID) (Project, error)
 }
 

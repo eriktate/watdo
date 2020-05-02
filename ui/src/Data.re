@@ -11,13 +11,23 @@ type accounts = array(account);
 
 let emptyAccount = {id: "", name: "", createdAt: "", updatedAt: ""};
 
-let withId = (id, fieldList) => {
+type project = {
+  id: string,
+  name: string,
+  description: string,
+  accountId: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+type projects = array(project);
+
+let withId = (id, fieldList) =>
   if (id != "") {
-    [("id", Json.Encode.string(id))] @ fieldList
+    [("id", Json.Encode.string(id))] @ fieldList;
   } else {
-    fieldList
-  }
-}
+    fieldList;
+  };
 
 module Decode = {
   let account = (json): account =>
@@ -31,6 +41,19 @@ module Decode = {
   let accounts = (json): array(account) =>
     Json.Decode.(json |> array(account));
 
+  let project = (json): project =>
+    Json.Decode.{
+      id: json |> field("id", string),
+      name: json |> field("name", string),
+      accountId: json |> field("accountId", string),
+      description: json |> field("description", string),
+      createdAt: json |> field("createdAt", string),
+      updatedAt: json |> field("updatedAt", string),
+    };
+
+  let projects = (json): array(project) =>
+    Json.Decode.(json |> array(project));
+
   let id = (json): string => Json.Decode.string(json);
 };
 
@@ -39,6 +62,16 @@ module Encode = {
     let fieldList = [("name", Json.Encode.string(account.name))];
 
     Json.Encode.(object_(withId(account.id, fieldList)));
+  };
+
+  let project = project => {
+    let fieldList = [
+      ("name", Json.Encode.string(project.name)),
+      ("description", Json.Encode.string(project.description)),
+      ("accountId", Json.Encode.string(project.accountId)),
+    ];
+
+    Json.Encode.(object_(withId(project.id, fieldList)));
   };
 };
 
@@ -76,6 +109,23 @@ let saveAccount = (account, callback) =>
          |> (
            id => {
              callback(id);
+             resolve();
+           }
+         )
+       )
+    |> ignore
+  );
+
+let listProjects = (accountId, callback) =>
+  Js.Promise.(
+    Fetch.fetch(baseUrl ++ "/project?accountId=" ++ accountId)
+    |> then_(Fetch.Response.json)
+    |> then_(json =>
+         json
+         |> Decode.accounts
+         |> (
+           accounts => {
+             callback(accounts);
              resolve();
            }
          )

@@ -37,7 +37,7 @@ func (s *Store) ListProjects(ctx context.Context, req wrkhub.ListProjectsReq) ([
 	query := getQuery("listProjects")
 
 	var projects []wrkhub.Project
-	if err := s.db.SelectContext(ctx, &projects, query); err != nil {
+	if err := s.db.SelectContext(ctx, &projects, query, req.AccountID); err != nil {
 		return nil, err
 	}
 

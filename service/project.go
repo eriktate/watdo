@@ -31,6 +31,6 @@ func (s ProjectService) FetchProject(ctx context.Context, id uid.UID) (wrkhub.Pr
 	return s.store.FetchProject(ctx, id)
 }
 
-func (s ProjectService) ListProjects(ctx context.Context) ([]wrkhub.Project, error) {
-	return s.store.ListProjects(ctx, wrkhub.ListProjectsReq{})
+func (s ProjectService) ListProjects(ctx context.Context, req wrkhub.ListProjectsReq) ([]wrkhub.Project, error) {
+	return s.store.ListProjects(ctx, req)
 }

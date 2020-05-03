@@ -22,6 +22,15 @@ type project = {
 
 type projects = array(project);
 
+let emptyProject = {
+  id: "",
+  name: "",
+  description: "",
+  accountId: "",
+  createdAt: "",
+  updatedAt: "",
+};
+
 let withId = (id, fieldList) =>
   if (id != "") {
     [("id", Json.Encode.string(id))] @ fieldList;
@@ -58,7 +67,7 @@ module Decode = {
 };
 
 module Encode = {
-  let account = account => {
+  let account = (account: account) => {
     let fieldList = [("name", Json.Encode.string(account.name))];
 
     Json.Encode.(object_(withId(account.id, fieldList)));
@@ -70,7 +79,6 @@ module Encode = {
       ("description", Json.Encode.string(project.description)),
       ("accountId", Json.Encode.string(project.accountId)),
     ];
-
     Json.Encode.(object_(withId(project.id, fieldList)));
   };
 };
@@ -92,7 +100,7 @@ let listAccounts = callback =>
     |> ignore
   );
 
-let saveAccount = (account, callback) =>
+let saveAccount = (account: account, callback) =>
   Js.Promise.(
     Fetch.fetchWithInit(
       baseUrl ++ "/account",
@@ -122,10 +130,34 @@ let listProjects = (accountId, callback) =>
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json
-         |> Decode.accounts
+         |> Decode.projects
          |> (
-           accounts => {
-             callback(accounts);
+           projects => {
+             callback(projects);
+             resolve();
+           }
+         )
+       )
+    |> ignore
+  );
+
+let saveProject = (project, callback) =>
+  Js.Promise.(
+    Fetch.fetchWithInit(
+      baseUrl ++ "/project",
+      Fetch.RequestInit.make(
+        ~method_=Fetch.Post,
+        ~body=Fetch.BodyInit.make(Json.stringify(Encode.project(project))),
+        (),
+      ),
+    )
+    |> then_(Fetch.Response.json)
+    |> then_(json =>
+         json
+         |> Decode.id
+         |> (
+           id => {
+             callback(id);
              resolve();
            }
          )

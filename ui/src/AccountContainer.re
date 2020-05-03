@@ -1,14 +1,12 @@
-open Data;
-
 type state = {
-  accounts,
+  accounts: Data.accounts,
   selectedAccount: option(string),
   loadingAccounts: bool,
 };
 
 type action =
   | LoadingAccounts
-  | LoadedAccounts(accounts)
+  | LoadedAccounts(Data.accounts)
   | SelectAccount(string);
 
 let initialState = {
@@ -18,10 +16,11 @@ let initialState = {
 };
 
 let refreshAccounts = dispatch =>
-  listAccounts(payload => dispatch(LoadedAccounts(payload)));
+  Data.listAccounts(payload => dispatch(LoadedAccounts(payload)));
 
-let findAccountById = (accounts, id) =>
-  Array.to_list(accounts) |> List.find(account => account.id == id);
+let findAccountById = (accounts: Data.accounts, id) =>
+  Array.to_list(accounts)
+  |> List.find((account: Data.account) => account.id == id);
 
 [@react.component]
 let make = () => {

@@ -70,10 +70,7 @@ let make = (~account, ~refreshAccounts) => {
     let name = ReactEvent.Form.target(event)##value;
     dispatch(SetName(name));
   };
-
-  let clear = _event => {
-    dispatch(Clear);
-  };
+  let clear = _event => dispatch(Clear);
 
   <form>
     {if (state.account.id == "") {

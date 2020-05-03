@@ -10,3 +10,5 @@ ui/indexProduction.html
 ui/**/*.bs.js
 /.db
 /.postgres
+dist/
+.cache/

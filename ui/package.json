@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "bs-platform": "^7.2.2",
+    "bsb-js": "^1.1.7",
     "moduleserve": "^0.9.0"
   }
 }

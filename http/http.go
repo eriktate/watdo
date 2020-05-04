@@ -75,7 +75,7 @@ func (s Server) buildRouter() *chi.Mux {
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 	}))
 
-	r.Post("/account", s.PostAccount())
+	r.Post("/account", PostAccount(s.service, s.log))
 	r.Get("/account", s.ListAccounts())
 	r.Get("/account/{accountID}", s.GetAccount())
 

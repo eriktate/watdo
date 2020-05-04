@@ -8,13 +8,14 @@ import (
 	"github.com/eriktate/wrkhub"
 	"github.com/eriktate/wrkhub/uid"
 	"github.com/go-chi/chi"
+	"github.com/sirupsen/logrus"
 )
 
-func (s Server) PostAccount() http.HandlerFunc {
+func PostAccount(service wrkhub.AccountService, log *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		data, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			s.log.WithError(err).Error("could not read request body")
+			log.WithError(err).Error("could not read request body")
 			badRequest(w, "could not read request body")
 			return
 		}
@@ -22,14 +23,14 @@ func (s Server) PostAccount() http.HandlerFunc {
 
 		var account wrkhub.Account
 		if err := json.Unmarshal(data, &account); err != nil {
-			s.log.WithError(err).Error("could not marshal account")
+			log.WithError(err).Error("could not marshal account")
 			badRequest(w, "could not unmarshal account")
 			return
 		}
 
-		id, err := s.service.SaveAccount(r.Context(), account)
+		id, err := service.SaveAccount(r.Context(), account)
 		if err != nil {
-			s.log.WithError(err).Error("could not save account")
+			log.WithError(err).Error("could not save account")
 			serverError(w, "could not save account")
 			return
 		}

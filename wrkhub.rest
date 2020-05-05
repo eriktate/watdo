@@ -34,3 +34,7 @@ GET /project?accountId=5f2d9a95-b335-493f-a7ed-8dbd81027bac
 // get a project
 http://localhost:8080
 GET /project/93305d12-6186-4002-a180-1d93ea9f74cb
+
+// get a token
+http://localhost:8080
+GET /token/d163193e-6f6a-4a71-92a1-c76d3148559a

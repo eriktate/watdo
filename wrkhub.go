@@ -38,12 +38,22 @@ type Account struct {
 
 // A User is a member of some number of Accounts. User's perform actions in the system.
 type User struct {
-	ID        uid.UID    `json:"id" db:"id"`
-	Name      string     `json:"name" db:"name"`
-	Email     string     `json:"email" db:"email"`
-	CreatedAt time.Time  `json:"createdAt" db:"created_at"`
-	UpdatedAt time.Time  `json:"updatedAt" db:"updated_at"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty" db:"deleted_at"`
+	ID               uid.UID       `json:"id" db:"id"`
+	Name             string        `json:"name" db:"name"`
+	Email            string        `json:"email" db:"email"`
+	DefaultAccountID uid.UID       `json:"defaultAccountId" db:"default_account_id"`
+	Associations     []Association `json:"associations,omitempty" db:"-"`
+	CreatedAt        time.Time     `json:"createdAt" db:"created_at"`
+	UpdatedAt        time.Time     `json:"updatedAt" db:"updated_at"`
+	DeletedAt        *time.Time    `json:"deletedAt,omitempty" db:"deleted_at"`
+}
+
+// An Association ties a User to an Account and keeps track of account specific information for that User.
+type Association struct {
+	UserID           uid.UID `json:"-" db:"user_id"`
+	AccountID        uid.UID `json:"accountId" db:"account_id"`
+	DefaultProjectID uid.UID `json:"defaultProject,omitempty" db:"default_project_id,omitempty"`
+	AccountName      string  `json:"accountName" db:"account_name"`
 }
 
 // A ListTasksReq captures a request for some listing of Tasks.
@@ -119,6 +129,10 @@ type WrkhubService interface {
 type Manager interface {
 	AssignAccountUser(ctx context.Context, accountID, userID uid.UID) error
 	SetTaskStatus(ctx context.Context, accountID, userID uid.UID) error
+}
+
+type Authenticator interface {
+	Authenticate(token string) error
 }
 
 // Validate whether or not a Project is configured properly.

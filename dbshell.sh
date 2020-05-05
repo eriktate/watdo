@@ -1,1 +1,1 @@
-psql -h localhost -U watdo
+psql -h localhost -U wrkhub

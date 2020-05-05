@@ -85,9 +85,12 @@ module Encode = {
 
 let listAccounts = callback =>
   Js.Promise.(
-    Fetch.fetch(baseUrl ++ "/account")
+    Fetch.fetchWithInit(
+      baseUrl ++ "/account",
+      Fetch.RequestInit.make(~credentials=Fetch.Include, ()),
+    )
     |> then_(Fetch.Response.json)
-    |> then_(json =>
+    |> then_(json => {
          json
          |> Decode.accounts
          |> (
@@ -96,7 +99,7 @@ let listAccounts = callback =>
              resolve();
            }
          )
-       )
+       })
     |> ignore
   );
 
@@ -107,6 +110,7 @@ let saveAccount = (account: account, callback) =>
       Fetch.RequestInit.make(
         ~method_=Fetch.Post,
         ~body=Fetch.BodyInit.make(Json.stringify(Encode.account(account))),
+        ~credentials=Fetch.Include,
         (),
       ),
     )
@@ -126,7 +130,10 @@ let saveAccount = (account: account, callback) =>
 
 let listProjects = (accountId, callback) =>
   Js.Promise.(
-    Fetch.fetch(baseUrl ++ "/project?accountId=" ++ accountId)
+    Fetch.fetchWithInit(
+      baseUrl ++ "/project?accountId=" ++ accountId,
+      Fetch.RequestInit.make(~credentials=Fetch.Include, ()),
+    )
     |> then_(Fetch.Response.json)
     |> then_(json =>
          json

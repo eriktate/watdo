@@ -11,6 +11,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type Middleware func(http.Handler) http.Handler
+
 type ConfigOpt func(s Server) Server
 
 type Server struct {
@@ -71,9 +73,13 @@ func (s Server) Listen() error {
 func (s Server) buildRouter() *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		// AllowedOrigins: []string{"*"},
+		AllowedOrigins:   []string{"http://localhost:8000", "http://localhost:8080"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
 	}))
+
+	r.Use(Authenticate(s.log))
 
 	r.Post("/account", PostAccount(s.service, s.log))
 	r.Get("/account", s.ListAccounts())
@@ -82,6 +88,9 @@ func (s Server) buildRouter() *chi.Mux {
 	r.Post("/project", s.PostProject())
 	r.Get("/project", s.ListProjects())
 	r.Get("/project/{projectID}", s.GetProject())
+
+	// r.Get("/user", GetUser(s.service, s.log))
+	r.Get("/token/{userID}", GetToken(s.log))
 
 	return r
 }
@@ -104,6 +113,11 @@ func badRequest(w http.ResponseWriter, msg string) {
 
 func serverError(w http.ResponseWriter, msg string) {
 	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte(msg))
+}
+
+func forbidden(w http.ResponseWriter, msg string) {
+	w.WriteHeader(http.StatusForbidden)
 	w.Write([]byte(msg))
 }
 

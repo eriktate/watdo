@@ -89,7 +89,7 @@ func (s Server) buildRouter() *chi.Mux {
 	r.Get("/project", s.ListProjects())
 	r.Get("/project/{projectID}", s.GetProject())
 
-	// r.Get("/user", GetUser(s.service, s.log))
+	r.Get("/user", GetCurrentUser(s.service, s.log))
 	r.Get("/token/{userID}", GetToken(s.log))
 
 	return r

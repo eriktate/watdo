@@ -119,16 +119,17 @@ type ProjectService interface {
 	FetchProject(ctx context.Context, id uid.UID) (Project, error)
 }
 
+type UserService interface {
+	SaveUser(ctx context.Context, user User) (uid.UID, error)
+	FetchUser(ctx context.Context, id uid.UID) (User, error)
+	ListUsers(ctx context.Context, req ListUsersReq) ([]User, error)
+}
+
 // A WrkhubService aggregates the functionality of all of the previous stores.
 type WrkhubService interface {
 	AccountService
 	ProjectService
-}
-
-// The Manager interface captures extraneous actions for now.
-type Manager interface {
-	AssignAccountUser(ctx context.Context, accountID, userID uid.UID) error
-	SetTaskStatus(ctx context.Context, accountID, userID uid.UID) error
+	UserService
 }
 
 type Authenticator interface {

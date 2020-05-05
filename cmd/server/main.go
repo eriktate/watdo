@@ -14,7 +14,7 @@ func main() {
 		logger.WithError(err).Fatal("could not connect to postgres")
 	}
 
-	service := service.NewService(store, store)
+	service := service.NewService(store, store, store)
 	server := http.NewServer(
 		http.WithLogger(logger),
 		http.WithService(service),

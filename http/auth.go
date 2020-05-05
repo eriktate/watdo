@@ -50,22 +50,20 @@ func Authenticate(log *logrus.Logger) Middleware {
 				return
 			}
 
-			// tokHeader := r.Header.Get("Authorization")
-			// if len(tokHeader) <= len(tokenPrefix) {
-			// 	log.WithField("token", tokHeader).Error("auth token too short")
-			// 	badRequest(w, "could not parse auth token")
-			// 	return
-			// }
+			// grab token from header by default
+			tokHeader := r.Header.Get("Authorization")
+			if len(tokHeader) <= len(tokenPrefix) {
+				sessionCookie, err := r.Cookie("wrkhub-session-token")
+				if err != nil {
+					log.WithError(err).Error("could not find session token")
+					badRequest(w, "could not read session token")
+					return
+				}
 
-			log.Info(r.Cookies())
-			sessionCookie, err := r.Cookie("wrkhub-session-token")
-			if err != nil {
-				log.WithError(err).Error("could not read session token")
-				badRequest(w, "could not read session token")
-				return
+				tokHeader = sessionCookie.Value
+			} else {
+				tokHeader = tokHeader[len(tokenPrefix):]
 			}
-
-			tokHeader := sessionCookie.Value
 
 			token, err := jwt.Parse(tokHeader, func(token *jwt.Token) (interface{}, error) {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

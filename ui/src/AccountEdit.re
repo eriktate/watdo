@@ -72,7 +72,7 @@ let make = (~account, ~refreshAccounts) => {
   };
   let clear = _event => dispatch(Clear);
 
-  <form>
+  <form className="tile">
     {if (state.account.id == "") {
        ReasonReact.string("Create new account");
      } else {
@@ -91,10 +91,10 @@ let make = (~account, ~refreshAccounts) => {
         />
       </label>
     </div>
-    <button type_="button" onClick={saveAccount(state.account)}>
+    <button type_="button" onClick={saveAccount(state.account)} className="btn-primary">
       {ReasonReact.string("Save")}
     </button>
-    <button type_="button" onClick=clear>
+    <button type_="button" onClick=clear className="btn-secondary">
       {ReasonReact.string("Clear")}
     </button>
   </form>;

@@ -52,7 +52,7 @@ type User struct {
 type Association struct {
 	UserID           uid.UID `json:"-" db:"user_id"`
 	AccountID        uid.UID `json:"accountId" db:"account_id"`
-	DefaultProjectID uid.UID `json:"defaultProject,omitempty" db:"default_project_id,omitempty"`
+	DefaultProjectID uid.UID `json:"defaultProjectId,omitempty" db:"default_project_id,omitempty"`
 	AccountName      string  `json:"accountName" db:"account_name"`
 }
 

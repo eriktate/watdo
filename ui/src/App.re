@@ -1,13 +1,19 @@
+// temporary value: user ID to emulate
+let forcedUserId = "d163193e-6f6a-4a71-92a1-c76d3148559a";
+
 type state = {
+  currentUser: Data.user,
   accounts: Data.accounts,
   projects: Data.projects,
+  loadingUser: bool,
   loadingAccounts: bool,
   loadingProjects: bool,
-  selectedAccount: option(string),
+  selectedAccount: string,
   selectedProject: option(string),
 };
 
 type action =
+  | LoadedUser(Data.user)
   | LoadingAccounts
   | LoadingProjects
   | LoadedAccounts(Data.accounts)
@@ -16,13 +22,18 @@ type action =
   | SelectProject(string);
 
 let initialState = {
+  currentUser: Data.emptyUser,
   accounts: [||],
   projects: [||],
+  loadingUser: true,
   loadingAccounts: true,
   loadingProjects: false,
-  selectedAccount: None,
+  selectedAccount: "",
   selectedProject: None,
 };
+
+let fetchUser = (dispatch, ()) =>
+  Data.fetchCurrentUser(payload => dispatch(LoadedUser(payload)));
 
 let refreshAccounts = (dispatch, ()) =>
   Data.listAccounts(payload => dispatch(LoadedAccounts(payload)));
@@ -51,12 +62,17 @@ let make = () => {
     React.useReducer(
       (state, action) =>
         switch (action) {
+        | LoadedUser(user) => {
+            ...state,
+            currentUser: user,
+            selectedAccount: user.defaultAccountId,
+          }
         | LoadingAccounts => {...state, loadingAccounts: true}
         | LoadingProjects => {...state, loadingProjects: true}
         | LoadedAccounts(accounts) => {
             ...state,
             loadingAccounts: false,
-            selectedAccount: None,
+            selectedAccount: "",
             accounts,
           }
         | LoadedProjects(projects) => {
@@ -65,7 +81,7 @@ let make = () => {
             selectedProject: None,
             projects,
           }
-        | SelectAccount(id) => {...state, selectedAccount: Some(id)}
+        | SelectAccount(id) => {...state, selectedAccount: id}
         | SelectProject(id) => {...state, selectedProject: Some(id)}
         },
       initialState,
@@ -73,7 +89,7 @@ let make = () => {
 
   // initial load of accounts
   React.useEffect0(() => {
-    refreshAccounts(dispatch, ());
+    Data.fetchToken(forcedUserId, _payload => fetchUser(dispatch, ()));
     None;
   });
 
@@ -81,33 +97,13 @@ let make = () => {
   let refreshProjects = refreshProjects(dispatch);
   let selectAccount = selectAccount(dispatch);
   let selectProject = selectProject(dispatch);
-  let account =
-    switch (state.selectedAccount) {
-    | Some(id) => Some(findAccountById(state.accounts, id))
-    | None => None
-    };
 
-  let project =
-    switch (state.selectedProject) {
-    | Some(id) => Some(findProjectById(state.projects, id))
-    | None => None
-    };
-
-  <main>
-    <Navbar />
-    <AccountEdit account refreshAccounts />
-    <Accounts accounts={state.accounts} refreshAccounts selectAccount />
-    {switch (state.selectedAccount) {
-     | Some(id) =>
-       <div>
-         <ProjectEdit project refreshProjects={() => refreshProjects(id)} />
-         <Projects
-           projects={state.projects}
-           refreshProjects={refreshProjects(id)}
-           selectProject
-         />
-       </div>
-     | None => <div />
-     }}
-  </main>;
+  <div>
+    <Navbar
+      currentUser={state.currentUser}
+      selectedAccount={state.selectedAccount}
+      selectAccount
+    />
+    <main> {ReasonReact.string("Placeholder!")} </main>
+  </div>;
 };

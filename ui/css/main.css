@@ -1,0 +1,105 @@
+@import "reset.css";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+:root {
+  --primary: #111111;
+  --secondary: #ffffff;
+  --accent: #555555;
+  --background: #eeeeee;
+  --foreground: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.25);
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--background);
+  font-family: "Nunito", sans-serif;
+}
+
+main {
+  padding: 2rem;
+}
+
+nav {
+  background-color: var(--primary);
+  color: var(--background);
+  box-shadow: 0px 3px 5px var(--shadow);
+}
+
+nav > ul {
+  float: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav > ul > li:hover {
+  background-color: var(--accent);
+}
+
+nav > ul > li > a {
+  display: block;
+  padding: 1rem;
+  color: var(--background);
+}
+
+a {
+  text-decoration: none;
+}
+
+input[type="input"] {
+  border-radius: 5px;
+  border-style: solid;
+  border-color: var(--secondary);
+  line-height: 1.5rem;
+  padding: 0 1rem;
+}
+
+button {
+  border-radius: 3px;
+  border-style: solid;
+  padding: 0.5rem 1rem;
+}
+
+.nav-left {
+  float: left;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--background);
+  border-color: var(--primary);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.banner {
+  font-weight: 700;
+  /* font-size: 1.5rem; */
+  padding: 1rem;
+}
+
+.clearfix {
+  clear: both;
+}
+
+.tile {
+  border-radius: 5px;
+  box-shadow: 0px 3px 5px var(--shadow);
+  background-color: var(--foreground);
+  padding: 2rem;
+  color: var(--primary);
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: row;
+}
+
+.dropdown > a {
+  display: block;
+}

@@ -43,3 +43,8 @@ GET /token/d163193e-6f6a-4a71-92a1-c76d3148559a
 http://localhost:8080
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQxNjMxOTNlLTZmNmEtNGE3MS05MmExLWM3NmQzMTQ4NTU5YSJ9.74oi4rYFYYhtMQT5k0FdbA5JRiwuKJ_Wws1idxE9e3s
 GET /user
+
+// list tasks
+http://localhost:8080
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQxNjMxOTNlLTZmNmEtNGE3MS05MmExLWM3NmQzMTQ4NTU5YSJ9.74oi4rYFYYhtMQT5k0FdbA5JRiwuKJ_Wws1idxE9e3s
+GET /task?projectId=93305d12-6186-4002-a180-1d93ea9f74cb

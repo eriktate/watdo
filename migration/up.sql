@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS user_accounts(
 	user_id UUID NOT NULL REFERENCES users(id),
 	account_id UUID NOT NULL REFERENCES accounts(id),
 	default_project_id UUID REFERENCES projects(id),
-	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY(user_id, account_id)
 );
 
 CREATE TABLE IF NOT EXISTS task_statuses(
@@ -61,11 +62,11 @@ CREATE TABLE IF NOT EXISTS assigned_users(
 INSERT INTO accounts (id, name)
 VALUES (
 	'5f2d9a95-b335-493f-a7ed-8dbd81027bac',
-	'Test Account 1'
+	'wrkhub test'
 ),
 (
 	'c3dd6b60-553c-4995-abda-c1573a720d73',
-	'Test Account 2'
+	'Test Account'
 ) ON CONFLICT DO NOTHING;
 
 INSERT INTO users (id, name, email, default_account_id)
@@ -114,4 +115,43 @@ VALUES (
 	'd163193e-6f6a-4a71-92a1-c76d3148559a',
 	'c3dd6b60-553c-4995-abda-c1573a720d73',
 	NULL
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO task_statuses (id, account_id, name)
+VALUES (
+	'2470e4eb-9702-4769-b2e3-c3c410e6f258',
+	'5f2d9a95-b335-493f-a7ed-8dbd81027bac',
+	'Todo'
+), (
+	'ac04d1b9-64a5-474c-9517-531cbc246b42',
+	'5f2d9a95-b335-493f-a7ed-8dbd81027bac',
+	'In Progress'
+), (
+	'b5082c3b-ba21-4bec-8e39-ef0d0c68cb6a',
+	'5f2d9a95-b335-493f-a7ed-8dbd81027bac',
+	'Done'
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO tasks (id, title, description, project_id, reporter_id, status_id)
+VALUES (
+	'6ee8cf36-ee06-457a-b7f3-a96eecacdd9b',
+	'Test Task 1',
+	'Just a simple test task',
+	'93305d12-6186-4002-a180-1d93ea9f74cb',
+	'd163193e-6f6a-4a71-92a1-c76d3148559a',
+	'2470e4eb-9702-4769-b2e3-c3c410e6f258'
+), (
+	'0b74ec3c-f6df-4b5d-b5ac-e4a013e0004f',
+	'Test Task 2',
+	'Another simple task',
+	'93305d12-6186-4002-a180-1d93ea9f74cb',
+	'd163193e-6f6a-4a71-92a1-c76d3148559a',
+	'2470e4eb-9702-4769-b2e3-c3c410e6f258'
+), (
+	'adf970d9-f30c-462a-9db9-59c52c06e30b',
+	'Test Task 3',
+	'This task is kind of pointless',
+	'93305d12-6186-4002-a180-1d93ea9f74cb',
+	'd163193e-6f6a-4a71-92a1-c76d3148559a',
+	'ac04d1b9-64a5-474c-9517-531cbc246b42'
 ) ON CONFLICT DO NOTHING;

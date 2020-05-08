@@ -9,14 +9,14 @@ import (
 
 // A Task is some unit of work to be done.
 type Task struct {
-	ID          uid.UID
-	Title       string
-	Description string
-	ProjectID   uid.UID
-	ReporterID  uid.UID
-	StatusID    uid.UID
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID          uid.UID   `json:"id" db:"id"`
+	Title       string    `json:"title" db:"title"`
+	Description string    `json:"description" db:"description"`
+	ProjectID   uid.UID   `json:"projectId" db:"project_id"`
+	ReporterID  uid.UID   `json:"reporterId" db:"reporter_id"`
+	StatusID    uid.UID   `json:"statusId" db:"status_id"`
+	CreatedAt   time.Time `json:"createdAt" db:"created_at"`
+	UpdatedAt   time.Time `json:"updatedAt" db:"updated_at"`
 }
 
 type Project struct {
@@ -125,11 +125,18 @@ type UserService interface {
 	ListUsers(ctx context.Context, req ListUsersReq) ([]User, error)
 }
 
+type TaskService interface {
+	SaveTask(ctx context.Context, task Task) (uid.UID, error)
+	FetchTask(ctx context.Context, id uid.UID) (Task, error)
+	ListTasks(ctx context.Context, req ListTasksReq) ([]Task, error)
+}
+
 // A WrkhubService aggregates the functionality of all of the previous stores.
 type WrkhubService interface {
 	AccountService
 	ProjectService
 	UserService
+	TaskService
 }
 
 type Authenticator interface {

@@ -5,19 +5,22 @@ type state = {
   currentUser: Data.user,
   accounts: Data.accounts,
   projects: Data.projects,
+  tasks: Data.tasks,
   loadingUser: bool,
   loadingAccounts: bool,
   loadingProjects: bool,
+  loadingTasks: bool,
   selectedAccount: string,
   selectedProject: option(string),
 };
 
 type action =
-  | LoadedUser(Data.user)
   | LoadingAccounts
   | LoadingProjects
+  | LoadedUser(Data.user)
   | LoadedAccounts(Data.accounts)
   | LoadedProjects(Data.projects)
+  | LoadedTasks(Data.tasks)
   | SelectAccount(string)
   | SelectProject(string);
 
@@ -25,9 +28,11 @@ let initialState = {
   currentUser: Data.emptyUser,
   accounts: [||],
   projects: [||],
+  tasks: [||],
   loadingUser: true,
   loadingAccounts: true,
   loadingProjects: false,
+  loadingTasks: false,
   selectedAccount: "",
   selectedProject: None,
 };
@@ -40,6 +45,9 @@ let refreshAccounts = (dispatch, ()) =>
 
 let refreshProjects = (dispatch, accountId, ()) =>
   Data.listProjects(accountId, payload => dispatch(LoadedProjects(payload)));
+
+let refreshTasks = (dispatch, projectId, ()) =>
+  Data.listTasks(projectId, payload => dispatch(LoadedTasks(payload)));
 
 let selectAccount = (dispatch, id) => {
   refreshProjects(dispatch, id, ());
@@ -81,6 +89,7 @@ let make = () => {
             selectedProject: None,
             projects,
           }
+        | LoadedTasks(tasks) => {...state, loadingTasks: false, tasks}
         | SelectAccount(id) => {...state, selectedAccount: id}
         | SelectProject(id) => {...state, selectedProject: Some(id)}
         },
@@ -89,7 +98,19 @@ let make = () => {
 
   // initial load of accounts
   React.useEffect0(() => {
-    Data.fetchToken(forcedUserId, _payload => fetchUser(dispatch, ()));
+    Data.fetchToken(forcedUserId, _payload =>
+      Data.fetchCurrentUser(user => {
+        dispatch(LoadedUser(user));
+        refreshTasks(
+          dispatch,
+          (Array.to_list(user.associations)
+          |> List.find((assoc: Data.association) =>
+               assoc.accountId == user.defaultAccountId
+             )).defaultProjectId,
+          (),
+        );
+      })
+    );
     None;
   });
 
@@ -98,12 +119,14 @@ let make = () => {
   let selectAccount = selectAccount(dispatch);
   let selectProject = selectProject(dispatch);
 
-  <div>
+  <>
     <Navbar
       currentUser={state.currentUser}
       selectedAccount={state.selectedAccount}
       selectAccount
     />
-    <main> {ReasonReact.string("Placeholder!")} </main>
-  </div>;
+    <main>
+      <Board tasks={state.tasks} />
+    </main>
+  </>;
 };

@@ -16,13 +16,18 @@ html, body {
   font-family: "Nunito", sans-serif;
 }
 
+#app {
+  height: 100%;
+}
+
 main {
   padding: 2rem;
+  height: 100%;
 }
 
 nav {
   background-color: var(--primary);
-  color: var(--background);
+  color: var(--foreground);
   box-shadow: 0px 3px 5px var(--shadow);
 }
 
@@ -40,7 +45,7 @@ nav > ul > li:hover {
 nav > ul > li > a {
   display: block;
   padding: 1rem;
-  color: var(--background);
+  color: var(--foreground);
 }
 
 a {
@@ -62,6 +67,8 @@ button {
 }
 
 .nav-left {
+  display: flex;
+  flex-direction: row;
   float: left;
 }
 
@@ -87,12 +94,13 @@ button {
   clear: both;
 }
 
-.tile {
+.tile, .bucket {
   border-radius: 5px;
   box-shadow: 0px 3px 5px var(--shadow);
   background-color: var(--foreground);
   padding: 2rem;
   color: var(--primary);
+  width: 100%;
 }
 
 .dropdown {
@@ -102,4 +110,30 @@ button {
 
 .dropdown > a {
   display: block;
+}
+
+.board {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.bucket {
+  display: flex;
+  flex-direction: column;
+  margin: 0 2rem;
+}
+
+.task {
+  border-style: solid;
+  border-radius: 5px;
+  border-color: var(--background);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-weight: 700;
 }

@@ -61,6 +61,19 @@ let emptyProject = {
   updatedAt: "",
 };
 
+type task = {
+  id: string,
+  title: string,
+  description: string,
+  projectId: string,
+  reporterId: string,
+  statusId: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+type tasks = array(task);
+
 type listItem = {
   id: string,
   name: string,
@@ -134,6 +147,20 @@ module Decode = {
 
   let projects = (json): array(project) =>
     Json.Decode.(json |> array(project));
+
+  let task = (json): task =>
+    Json.Decode.{
+      id: json |> field("id", string),
+      title: json |> field("title", string),
+      description: json |> field("description", string),
+      projectId: json |> field("projectId", string),
+      reporterId: json |> field("reporterId", string),
+      statusId: json |> field("statusId", string),
+      createdAt: json |> field("createdAt", string),
+      updatedAt: json |> field("updatedAt", string),
+    };
+
+  let tasks = (json): array(task) => Json.Decode.(json |> array(task));
 
   let id = (json): string => Json.Decode.string(json);
 };
@@ -272,6 +299,26 @@ let fetchCurrentUser = callback =>
          |> (
            user => {
              callback(user);
+             resolve();
+           }
+         )
+       })
+    |> ignore
+  );
+
+let listTasks = (projectId, callback) =>
+  Js.Promise.(
+    Fetch.fetchWithInit(
+      baseUrl ++ "/task?projectId=" ++ projectId,
+      Fetch.RequestInit.make(~credentials=Fetch.Include, ()),
+    )
+    |> then_(Fetch.Response.json)
+    |> then_(json => {
+         json
+         |> Decode.tasks
+         |> (
+           tasks => {
+             callback(tasks);
              resolve();
            }
          )

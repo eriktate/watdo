@@ -3,11 +3,13 @@ let make = (~currentUser: Data.user, ~selectedAccount, ~selectAccount) => {
   <nav>
     <div className="nav-left">
       <div className="banner"> {ReasonReact.string("WH")} </div>
-      <Dropdown
-        items={Data.associationsToListItems(currentUser.associations)}
-        selectedId=selectedAccount
-        select=selectAccount
-      />
+      <div className="banner">
+        <Dropdown
+          items={Data.associationsToListItems(currentUser.associations)}
+          selectedId=selectedAccount
+          select=selectAccount
+        />
+      </div>
     </div>
     <ul>
       <li> <a href="#"> {ReasonReact.string("Dashboard")} </a> </li>
